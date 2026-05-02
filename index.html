@@ -3,114 +3,189 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gửi Tuyết Trinh</title>
+    <title>Gửi @@@@</title>
     <style>
-        body, html {
-            margin: 0; padding: 0; width: 100%; height: 100%;
-            background-color: #ffebee; font-family: Arial, sans-serif;
-            overflow: hidden; display: flex; justify-content: center; align-items: center;
+        :root {
+            --pink-light: #ffebee;
+            --heart-red: #ff1744;
         }
 
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--pink-light);
+            font-family: 'Arial', sans-serif;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+      
         #overlay {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: #ffebee; z-index: 1000; display: flex;
-            justify-content: center; align-items: center;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: var(--pink-light);
+            z-index: 1000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
         }
 
         #start-btn {
-            padding: 15px 30px; font-size: 18px; background: #ff1744;
-            color: white; border: none; border-radius: 25px; cursor: pointer;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            padding: 15px 30px;
+            font-size: 18px;
+            background: var(--heart-red);
+            color: white;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
         }
 
-        /* Hiệu ứng ảnh bay */
+        
+        .floating {
+            position: absolute;
+            pointer-events: none;
+            z-index: 1;
+        }
+
         .floating-img {
-            width: 120px; height: auto; border: 4px solid white;
-            position: absolute; z-index: 1; animation: float-around 20s infinite linear;
+            width: 150px;
+            height: auto;
+            border: 5px solid white;
             box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            position: absolute;
+            animation: float-around 20s infinite linear;
         }
 
         @keyframes float-around {
             0% { transform: translate(0, 0) rotate(0deg); }
-            25% { transform: translate(50px, 50px) rotate(5deg); }
-            50% { transform: translate(0, 100px) rotate(-5deg); }
-            75% { transform: translate(-50px, 50px) rotate(5deg); }
+            25% { transform: translate(100px, 100px) rotate(5deg); }
+            50% { transform: translate(0, 200px) rotate(-5deg); }
+            75% { transform: translate(-100px, 100px) rotate(5deg); }
             100% { transform: translate(0, 0) rotate(0deg); }
         }
 
-        /* Hiệu ứng trái tim bay */
-        .heart-particle {
-            position: absolute; color: #ff1744; pointer-events: none; z-index: 2;
+      
+        .envelope-container {
+            position: relative;
+            width: 300px;
+            height: 200px;
+            z-index: 10;
+            perspective: 1000px;
         }
 
-        /* Phong thư */
-        .envelope-container { position: relative; width: 280px; height: 180px; z-index: 10; }
         .envelope {
-            width: 100%; height: 100%; background: #ffffff; border: 1px solid #ddd;
-            display: flex; justify-content: center; align-items: center;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.1); cursor: pointer; position: relative;
-        }
-        .envelope::after {
-            content: ""; position: absolute; top: 0;
-            border-left: 140px solid transparent; border-right: 140px solid transparent;
-            border-top: 90px solid #f0f0f0; transform-origin: top; transition: 0.5s; z-index: 2;
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: #ffffff; 
+            border: 1px solid #ddd;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            cursor: pointer;
+            transition: 0.5s;
         }
 
-        /* Bức thư */
+        .envelope::after { 
+            content: "";
+            position: absolute;
+            top: 0;
+            border-left: 150px solid transparent;
+            border-right: 150px solid transparent;
+            border-top: 100px solid #f9f9f9;
+            transform-origin: top;
+            transition: 0.5s;
+            z-index: 2;
+        }
+
+        .heart-icon {
+            font-size: 50px;
+            color: var(--heart-red);
+            z-index: 3;
+            transition: 0.3s;
+        }
+
+        
         .letter {
-            position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0);
-            width: 90%; max-width: 450px; background: white; padding: 20px;
-            display: flex; align-items: center; box-shadow: 0 20px 50px rgba(0,0,0,0.3);
-            border-radius: 10px; z-index: 100; opacity: 0; transition: 0.6s;
-            box-sizing: border-box;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            width: 500px;
+            background: white;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.2);
+            border-radius: 10px;
+            z-index: 100;
+            transition: 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            opacity: 0;
         }
 
         .letter-img {
-            width: 35%; height: auto; aspect-ratio: 853 / 1215;
-            object-fit: cover; border-radius: 5px; margin-right: 15px;
+            width: 150px; 
+            height: 213px; 
+            object-fit: cover;
+            border-radius: 5px;
+            margin-right: 20px;
         }
 
-        .letter-content { flex: 1; }
-        .letter-content h2 { font-size: 24px; font-weight: bold; margin: 0; color: #333; }
-        .letter-content p { font-size: 16px; color: #555; line-height: 1.4; margin-top: 10px; }
-
-        /* Mobile */
-        @media (max-width: 480px) {
-            .letter { flex-direction: column; text-align: center; }
-            .letter-img { width: 50%; margin-right: 0; margin-bottom: 10px; }
-            .floating-img { width: 70px; }
+        .letter-content h2 {
+            font-size: 24px;
+            font-weight: bold;
+            margin: 0 0 10px 0;
+            color: #333;
         }
 
-        .envelope-container.open .letter { transform: translate(-50%, -50%) scale(1); opacity: 1; }
-        .envelope-container.open .envelope::after { transform: rotateX(180deg); }
-        .heart-icon { font-size: 50px; color: #ff1744; z-index: 3; }
+        .letter-content p {
+            font-size: 16px;
+            color: #555;
+            line-height: 1.5;
+            text-transform: lowercase; 
+        }
+
+        /* Trạng thái mở */
+        .envelope-container.open .letter {
+            transform: translate(-50%, -50%) scale(1);
+            opacity: 1;
+        }
+
+        .envelope-container.open .envelope::after {
+            transform: rotateX(180deg);
+        }
     </style>
 </head>
 <body>
 
 <div id="overlay">
-    <button id="start-btn">Bấm để khám phá món quà của Tuyết Trinh ❤️</button>
+    <button id="start-btn">Bấm vào đây </button>
 </div>
 
 <audio id="bgMusic" loop>
     <source src="Dm Minh.mp3" type="audio/mpeg">
 </audio>
 
-<img src="Dm Minh 1.jpg" class="floating-img" style="top: 5%; left: 5%; animation-delay: 0s;">
-<img src="Dm Minh 2.jpg" class="floating-img" style="top: 50%; left: 80%; animation-delay: -5s;">
-<img src="Dm Minh 3.jpg" class="floating-img" style="top: 10%; left: 70%; animation-delay: -10s;">
-<img src="Dm Minh 4.jpg" class="floating-img" style="top: 70%; left: 10%; animation-delay: -3s;">
-<img src="Dm Minh 5.jpg" class="floating-img" style="top: 5%; left: 40%; animation-delay: -7s;">
-<img src="Dm Minh 6.jpg" class="floating-img" style="top: 80%; left: 50%; animation-delay: -12s;">
+<img src="Dm Minh 1.jpg" class="floating-img" style="top: 10%; left: 10%; animation-delay: 0s;">
+<img src="Dm Minh 2.jpg" class="floating-img" style="top: 60%; left: 70%; animation-delay: -5s;">
+<img src="Dm Minh 3.jpg" class="floating-img" style="top: 20%; left: 80%; animation-delay: -10s;">
+<img src="Dm Minh 4.jpg" class="floating-img" style="top: 70%; left: 5%; animation-delay: -3s;">
+<img src="Dm Minh 5.jpg" class="floating-img" style="top: 5%; left: 45%; animation-delay: -7s;">
+<img src="Dm Minh 6.jpg" class="floating-img" style="top: 40%; left: 85%; animation-delay: -12s;">
 
 <div class="envelope-container" id="mainEnvelope">
     <div class="letter">
-        <img src="Dm Minh.jpg" class="letter-img">
+        <img src="Dm Minh.jpg" alt="Tuyết Trinh" class="letter-img">
         <div class="letter-content">
-            <h2>Gửi Tuyết Trinh</h2>
-            <p>Valentine này anh muốn gửi đến Tuyết Trinh một lời chúc thật đặc biệt. Dù mình chỉ mới bắt đầu làm quen thôi, nhưng anh vẫn rất trân trọng cơ hội được biết em. Giữa rất nhiều người ngoài kia, việc mình có thể trò chuyện và hiểu nhau từng chút một đã là điều đáng quý rồi.
-Anh hy vọng Tuyết Trinh luôn vui vẻ, xinh đẹp và giữ được sự dịu dàng vốn có của mình. Mong rằng những ngày sắp tới, tụi mình sẽ có thêm nhiều câu chuyện để kể cho nhau nghe, nhiều khoảnh khắc để nhớ về.
-Chúc em một Valentine thật ấm áp và trọn vẹn, Tuyết Trinh nhé 💝 </p>
+            <h2>Gửi @@@@@</h2>
+            <p>Đvxfuhsdfiuuuuuuuuuuuuuuuuudzjxusdgfiusdhfiuhdsugfuysgdiufidsuhfidsbfuygfdug </p>
         </div>
     </div>
     <div class="envelope">
@@ -123,38 +198,40 @@ Chúc em một Valentine thật ấm áp và trọn vẹn, Tuyết Trinh nhé �
     const music = document.getElementById('bgMusic');
     const envelope = document.getElementById('mainEnvelope');
 
+    
     document.getElementById('start-btn').addEventListener('click', () => {
         overlay.style.display = 'none';
         music.play();
-        createHeartFlow(); // Bắt đầu hiệu ứng trái tim
+        createHearts();
     });
 
+  
     envelope.addEventListener('click', () => {
         envelope.classList.add('open');
     });
 
-    // Hàm tạo trái tim bay
-    function createHeartFlow() {
+ 
+    function createHearts() {
         setInterval(() => {
             const heart = document.createElement('div');
             heart.innerHTML = '❤️';
-            heart.className = 'heart-particle';
+            heart.className = 'floating';
             heart.style.left = Math.random() * 100 + 'vw';
-            heart.style.top = '105vh';
-            heart.style.fontSize = (Math.random() * 15 + 10) + 'px';
+            heart.style.top = '110vh';
+            heart.style.fontSize = (Math.random() * 20 + 10) + 'px';
+            heart.style.opacity = Math.random();
             
             const duration = Math.random() * 3 + 4;
             heart.animate([
-                { transform: `translateY(0) rotate(0deg)`, opacity: 1 },
-                { transform: `translateY(-110vh) rotate(${Math.random() * 360}deg)`, opacity: 0 }
+                { transform: `translateY(0) rotate(0deg)` },
+                { transform: `translateY(-120vh) rotate(${Math.random() * 360}deg)` }
             ], { duration: duration * 1000, easing: 'linear' });
 
             document.body.appendChild(heart);
             setTimeout(() => heart.remove(), duration * 1000);
-        }, 400);
+        }, 300);
     }
 </script>
 
 </body>
-
 </html>
